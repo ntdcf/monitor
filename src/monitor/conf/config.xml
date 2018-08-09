@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configures>
+    <configure>
+        <monitor>cpu</monitor>
+        <circle>1</circle>
+    </configure>
+    <configure>
+        <monitor>memory</monitor>
+        <circle>1</circle>
+    </configure>
+</configures>
