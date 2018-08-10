@@ -5,11 +5,11 @@ import (
 )
 
 type Monitor interface {
-	GetMonitorData() *MonitorData
-	ReportMonitorData(data *MonitorData)
+	SetMonitorData()
+	// ReportMonitorData(data *MonitorData)
 }
 
 type MonitorData struct {
-	Data        int64
+	Data        float64
 	MonitorTime time.Time
 }

@@ -1,29 +1,30 @@
 package main
 
 import (
-	"log"
 	"monitor/setting"
 	"monitor/work"
+	"time"
 )
 
 func main() {
 	configuration := new(setting.Configuration)
 	configuration.Init()
-	log.Println(configuration.MonitorConfigs)
-	monitors := configuration.MonitorConfigs.Configures
-	for _, monitorConfig := range monitors {
-		switch monitorConfig.Monitor {
-		case "cpu":
-			cpu := &work.Cpu{}
-			cpu.GetMonitorData()
-			log.Println(cpu)
-			break
-		case "memory":
-			log.Println(monitorConfig)
-			break
-		default:
-			log.Println("不受支持的监控类型")
 
+	monitors := configuration.MonitorConfigs.Configures
+	count := len(monitors)
+	stop := make([]chan bool, count)
+	for i := 0; i < count; i++ {
+		stop[i] = make(chan bool, 1)
+	}
+
+	for {
+		index := 0
+		for _, monitorConfig := range monitors {
+			go work.Run(monitorConfig.Monitor, monitorConfig.Circle, stop[index])
+			index++
 		}
+		time.Sleep(5 * time.Second)
+		stop[0] <- true
+		time.Sleep(100 * time.Second)
 	}
 }
